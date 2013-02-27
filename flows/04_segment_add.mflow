@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="4_add_segment">
+    <flow SubFlow="false" name="use_case_03_add_segmentFlow1" entity-id="84d46436-9a1a-47c7-aa00-b3c3d506b5c6">
+        <properties>
+            <property name="processingStrategy2"/>
+            <property name="processingStrategy"/>
+            <property value="1" name="auxiliary;index"/>
+            <property name="bussinessEventsLabel"/>
+            <property name="tracking:enable-default-events"/>
+            <property value="1" name="auxiliary;index"/>
+            <property value="1" name="auxiliary;index"/>
+            <property value="1" name="auxiliary;index"/>
+        </properties>
+        <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="compartment-lane#1">
+            <endpoint message-exchange-pattern="RequestResponse" direction="Inbound" type="http://www.mulesoft.org/schema/mule/hl7/endpoint" name="HL7" entity-id="HL7#1">
+                <properties>
+                    <property value="request-response" name="exchange-pattern"/>
+                    <property value="localhost" name="host"/>
+                    <property value="8085" name="port"/>
+                    <property value="2" name="auxiliary;index"/>
+                    <property value="2" name="auxiliary;index"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property value="2" name="auxiliary;index"/>
+                    <property name="address"/>
+                    <property value="10000" name="responseTimeout"/>
+                    <property name="encoding"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="mimeType"/>
+                    <property value="2" name="auxiliary;index"/>
+                    <property value="request-response" name="exchange-pattern"/>
+                    <property value="2" name="auxiliary;index"/>
+                    <property value="2" name="auxiliary;index"/>
+                    <property name="connector-ref"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="responseTransformer-refs"/>
+                    <property value="2" name="auxiliary;index"/>
+                    <property value="2" name="auxiliary;index"/>
+                    <property value="2" name="auxiliary;index"/>
+                </properties>
+            </endpoint>
+            <scope type="http://www.mulesoft.org/schema/mule/core/async" name="Async" entity-id="Async#1">
+                <properties>
+                    <property name="processingStrategy"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property value="3" name="auxiliary;index"/>
+                </properties>
+                <compartment entity-id="compartment#1">
+                    <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="compartment-lane#2">
+                        <pattern type="http://www.mulesoft.org/schema/mule/core/flow-ref" name="Flow Reference" entity-id="c9d88056-4630-4957-ad27-6a94853feedc">
+                            <properties>
+<property value="4_add_segmentFlow1" name="name"/>
+<property name="updated"/>
+                            </properties>
+                            <description></description>
+                        </pattern>
+                    </lane>
+                </compartment>
+            </scope>
+            <pattern type="http://www.mulesoft.org/schema/mule/hl7/ack-component" name="HL7 ACK" entity-id="HL7 ACK#1">
+                <properties>
+                    <property value="7" name="auxiliary;index"/>
+                    <property value="7" name="auxiliary;index"/>
+                    <property value="7" name="auxiliary;index"/>
+                    <property value="7" name="auxiliary;index"/>
+                </properties>
+            </pattern>
+        </lane>
+    </flow>
+    <flow SubFlow="false" name="4_add_segmentFlow1" entity-id="b8cd528f-044e-49d8-9d5f-bc7fadfd5c09">
+        <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="3585b95a-408d-44a8-8a3a-134dff3dde35">
+            <pattern type="http://www.mulesoft.org/schema/mule/hl7/string-to-hapimessage-transformer" name="String to HL7 Message Object" entity-id="String to HL7 Message Object#1">
+                <properties>
+                    <property name="returnClass"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="encoding"/>
+                    <property name="mimeType"/>
+                    <property value="4" name="auxiliary;moved-from"/>
+                </properties>
+            </pattern>
+            <pattern type="http://www.mulesoft.org/schema/mule/hl7/append-segment" name="Append Segment" entity-id="HL7 Append Segment#1">
+                <properties>
+                    <property value="PID" name="segmentName"/>
+                    <property value="|1|BOGIE|123456789|0123456789^AA^^JP|BROS^MARIO^^^^||19850101000000|M|||123 FAKE STREET^MARIO \T\ LUIGI BROS PLACE^TOADSTOOL KINGDOM^NES^A1B2C3^JP^HOME^^1234|1234|(555)555-0123^HOME^JP:1234567|||S|MSH|12345678|||||||0|||||N" name="segment"/>
+                    <property name="repetition"/>
+                    <property name="isNonStandard"/>
+                    <property value="5" name="auxiliary;moved-from"/>
+                </properties>
+            </pattern>
+            <endpoint message-exchange-pattern="RequestResponse" direction="Outbound" type="http://www.mulesoft.org/schema/mule/hl7/endpoint" name="HL7" entity-id="HL7#2">
+                <properties>
+                    <property value="request-response" name="exchange-pattern"/>
+                    <property value="localhost" name="host"/>
+                    <property value="8090" name="port"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="address"/>
+                    <property value="10000" name="responseTimeout"/>
+                    <property name="encoding"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="mimeType"/>
+                    <property value="request-response" name="exchange-pattern"/>
+                    <property name="connector-ref"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="responseTransformer-refs"/>
+                    <property value="6" name="auxiliary;moved-from"/>
+                </properties>
+            </endpoint>
+        </lane>
+    </flow>
+    <description></description>
+</mule-configuration>

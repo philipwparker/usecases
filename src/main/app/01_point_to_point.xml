@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:hl7="http://www.mulesoft.org/schema/mule/hl7" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:core="http://www.mulesoft.org/schema/mule/core" version="EE-3.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/hl7 http://www.mulesoft.org/schema/mule/hl7/current/mule-hl7.xsd 
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd 
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd ">
+    <flow name="point_to_pointFlow1" doc:name="point_to_pointFlow1">
+        <hl7:inbound-endpoint host="localhost" port="8081" responseTimeout="10000" exchange-pattern="request-response" doc:name="HL7"/>
+        <async doc:name="Async">
+            <hl7:outbound-endpoint host="localhost" port="8090" responseTimeout="10000" exchange-pattern="request-response" doc:name="HL7"/>
+        </async>
+        <hl7:ack-component doc:name="HL7 ACK"/>
+    </flow>
+</mule>

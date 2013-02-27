@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:hl7="http://www.mulesoft.org/schema/mule/hl7" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/hl7 http://www.mulesoft.org/schema/mule/hl7/current/mule-hl7.xsd 
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd 
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd 
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd ">
+    <flow name="9_nack_customFlow1" doc:name="9_nack_customFlow1">
+        <hl7:inbound-endpoint host="localhost" port="8091" responseTimeout="10000" exchange-pattern="request-response" doc:name="HL7"/>
+        <hl7:outbound-endpoint host="localhost" port="80" responseTimeout="10000" exchange-pattern="request-response" doc:name="CallBadEndpoint"/>
+        <catch-exception-strategy doc:name="Catch Exception Strategy">
+            <data-mapper:transform doc:name="MakeNack"/>
+        </catch-exception-strategy>
+    </flow>
+</mule>

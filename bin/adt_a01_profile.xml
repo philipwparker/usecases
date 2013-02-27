@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<HL7v2xConformanceProfile HL7Version="2.4" ProfileType="HL7">
+  <MetaData Name="" OrgName="" Version="HL7 2.4" Status="" Topics="confsig---profile-accNE_accAL-Deferred"/>
+  <Encodings>
+    <Encoding>ER7</Encoding>
+  </Encodings>
+  <DynamicDef AccAck="NE" AppAck="AL" MsgAckMode="Deferred"/>
+  <HL7v2xStaticDef MsgType="ADT" EventType="A01" MsgStructID="ADT_A01" EventDesc="-  Patient arriving - tracking" Role="Sender">
+    <MetaData Name="" OrgName="" Version="HL7 2.4" Status="" Topics="confsig---static-ADT-A01-null-ADT_A01-HL7 2.4--Sender"/>
+    <Segment Name="PID" LongName="Patient identification" Usage="R" Min="1" Max="3">
+      <Field Name="Patient Name" Usage="R" Min="1" Max="1" Datatype="XPN" Length="250" ItemNo="00108">
+        <Component Name="family name" Usage="O" Datatype="FN" Length="30">
+          <SubComponent Name="surname" Usage="O" Datatype="ST" Length="30">
+          </SubComponent>
+        </Component>
+        <Component Name="given name" Usage="O" Datatype="ST" Length="30">
+       </Component>
+      </Field>
+      <Field Name="Patient Address" Usage="R" Min="0" Max="2" Datatype="XAD" Length="250" ItemNo="00114">
+        <Component Name="street address (SAD)" Usage="O" Datatype="SAD" Length="3">
+          <SubComponent Name="street or mailing address" Usage="O" Datatype="ST" Length="3">
+          </SubComponent>
+          <SubComponent Name="street name" Usage="O" Datatype="ST" Length="3">
+          </SubComponent>
+          <SubComponent Name="dwelling number" Usage="O" Datatype="ST" Length="3">
+          </SubComponent>
+        </Component>
+        <Component Name="zip or postal code" Usage="O" Datatype="ST" Length="6">
+        </Component>
+      </Field>
+      <Field Name="Phone Number - Home" Usage="O" Min="0" Max="1" Datatype="XTN" Length="250" ItemNo="00116">
+        <Component Name="Phone number" Usage="O" Datatype="NM" Length="20">
+        </Component>
+      </Field>
+    </Segment>
+    <Segment Name="PV1" LongName="Patient visit" Usage="R" Min="1" Max="1">
+      <Field Name="Assigned Patient Location" Usage="O" Min="0" Max="1" Datatype="PL" Length="80" ItemNo="00133">
+        <Component Name="room" Usage="O" Datatype="IS" Length="3" Table="0303">
+        </Component>
+        <Component Name="bed" Usage="O" Datatype="IS" Length="3" Table="0304">
+        </Component>
+        <Component Name="building" Usage="O" Datatype="IS" Length="3" Table="0307" ConstantValue="TST">
+        </Component>
+      </Field>
+    </Segment> 
+  </HL7v2xStaticDef>
+</HL7v2xConformanceProfile>

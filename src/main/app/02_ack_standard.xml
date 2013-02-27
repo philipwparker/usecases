@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc" xmlns:hl7="http://www.mulesoft.org/schema/mule/hl7" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/hl7 http://www.mulesoft.org/schema/mule/hl7/current/mule-hl7.xsd 
+http://www.mulesoft.org/schema/mule/ee/jdbc http://www.mulesoft.org/schema/mule/ee/jdbc/current/mule-jdbc-ee.xsd 
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd 
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd ">
+   <!-- in Memory Database config BEGIN -->
+   <notifications>
+        <notification event="CONTEXT"/>
+        <notification-listener ref="setupDatabaseNotificationListener"/> 
+    </notifications>
+   
+    <jdbc-ee:derby-data-source name="jdbcDataSource" url="jdbc:derby:memory:muleEmbeddedDB;create=true" transactionIsolation="UNSPECIFIED" doc:name="Derby Data Source"/>
+    <jdbc-ee:connector name="jdbcConnector" dataSource-ref="jdbcDataSource" validateConnections="true" queryTimeout="-1" pollingFrequency="0" doc:name="Database">
+        <jdbc-ee:query key="getPrice" value="SELECT PRICE FROM TicketPrices WHERE DESTINATION='SFO'"/>
+    </jdbc-ee:connector>
+    
+    <spring:beans>
+            <spring:bean id="setupDatabaseNotificationListener" name="setupDatabaseNotificationListener" class="com.mulesoft.listener.SetupDatabaseNotificationListener"/>
+    </spring:beans>
+    <!-- in Memory Database config END -->
+    
+    <flow name="standard_ack" doc:name="standard_ack">
+        <hl7:inbound-endpoint host="localhost" port="8082" responseTimeout="10000" exchange-pattern="request-response" doc:name="HL7"/>
+        <async doc:name="Async">
+            <flow-ref name="2_ack_standardFlow1" doc:name="Flow Reference"/>
+        </async>
+        <hl7:ack-component doc:name="HL7 ACK"/>
+    </flow>
+    <flow name="2_ack_standardFlow1" doc:name="2_ack_standardFlow1">
+        <jdbc-ee:outbound-endpoint exchange-pattern="one-way" queryKey="getPrice" queryTimeout="-1" connector-ref="jdbcConnector" doc:name="Database"/>
+    </flow>
+    <flow name="application_ack" doc:name="application_ack">
+        <hl7:inbound-endpoint host="localhost" port="8083" responseTimeout="10000" exchange-pattern="request-response" doc:name="HL7"/>
+        <set-variable variableName="Hl7Message" value="#[message.payload]" doc:name="Variable"/>
+            <jdbc-ee:outbound-endpoint queryKey="getPrice" connector-ref="jdbcConnector" exchange-pattern="one-way" queryTimeout="-1" doc:name="Database"/>
+        <set-payload value="#[flowVars['Hl7Message']]" doc:name="Set Payload"/>
+        <hl7:ack-component doc:name="HL7 ACK"/>
+    </flow>
+</mule>

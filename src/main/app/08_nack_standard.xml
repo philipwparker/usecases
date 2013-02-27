@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc"
+	xmlns:hl7="http://www.mulesoft.org/schema/mule/hl7" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/hl7 http://www.mulesoft.org/schema/mule/hl7/current/mule-hl7.xsd 
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd 
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/jdbc http://www.mulesoft.org/schema/mule/ee/jdbc/current/mule-jdbc-ee.xsd ">
+    <hl7:connector name="HL7_Connector" validateConnections="true" doc:name="HL7 Connector"/>
+    <flow name="8_nack_standardFlow1" doc:name="8_nack_standardFlow1">
+        <hl7:inbound-endpoint host="localhost" port="8089" responseTimeout="10000" exchange-pattern="request-response" doc:name="HL7"/>
+<set-variable variableName="Hl7Message" value="#[message.payload]" doc:name="Variable"/>
+        <hl7:outbound-endpoint host="localhost" port="9999" responseTimeout="10" exchange-pattern="request-response" doc:name="CallBadEndpoint"/>
+        <logger message="F3 #[message.payload]" level="INFO" doc:name="Logger"/>
+        <set-payload value="#[flowVars['Hl7Message']]" doc:name="Set Payload"/>
+        <hl7:ack-component doc:name="HL7 ACK"/>
+        <catch-exception-strategy doc:name="Catch Exception Strategy">
+            <flow-ref name="8_nack_standardFlow3" doc:name="Flow Reference"/>
+        </catch-exception-strategy>
+    </flow>
+    <flow name="8_nack_standardFlow3" doc:name="8_nack_standardFlow3">
+        <hl7:outbound-endpoint host="localhost" port="80" responseTimeout="10000" exchange-pattern="request-response" doc:name="CallBadEndpoint"/>
+        <hl7:exception-strategy doc:name="HL7 Exception Strategy"/>
+    </flow>
+</mule>

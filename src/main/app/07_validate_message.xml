@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:hl7="http://www.mulesoft.org/schema/mule/hl7" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/hl7 http://www.mulesoft.org/schema/mule/hl7/current/mule-hl7.xsd 
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd 
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd ">
+    <flow name="7_validate_messageFlow1" doc:name="7_validate_messageFlow1">
+        <hl7:inbound-endpoint host="localhost" port="8088" responseTimeout="10000" exchange-pattern="request-response" doc:name="HL7"/>
+        <logger message="F1" level="INFO" doc:name="Logger"/>
+        <message-filter doc:name="Message" throwOnUnaccepted="true">
+            <hl7:profile-validator-filter profile="classpath:adt_a01_profile.xml"/>
+        </message-filter>
+        <hl7:exception-strategy doc:name="HL7 Exception Strategy"/>
+    </flow>
+</mule>

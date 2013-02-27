@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="10_create_message">
+    <flow SubFlow="false" name="10_create_messageFlow1" entity-id="d45e58b3-b463-49eb-8e9b-8789e2672a43">
+        <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="31fd9eb5-9c32-48ff-a9e0-b6588fa17ac0">
+            <endpoint message-exchange-pattern="RequestResponse" direction="Inbound" type="http://www.mulesoft.org/schema/mule/hl7/endpoint" name="HL7" entity-id="f2617a16-a94f-4bf3-af00-3e83a3e324f3">
+                <properties>
+                    <property value="8092" name="port"/>
+                    <property value="true" name="auxiliary;erased;mimeType"/>
+                    <property value="localhost" name="host"/>
+                    <property value="" name="businessEventsLabel"/>
+                    <property value="false" name="disableTransportTransformer"/>
+                    <property value="request-response" name="exchange-pattern"/>
+                    <property value="false" name="tracking:enable-default-events"/>
+                    <property value="" name="ref"/>
+                    <property value="" name="transformer-refs"/>
+                    <property value="" name="address"/>
+                    <property value="true" name="auxiliary;erased;encoding"/>
+                    <property value="" name="encoding"/>
+                    <property value="" name="responseTransformer-refs"/>
+                    <property value="10000" name="responseTimeout"/>
+                    <property value="" name="mimeType"/>
+                    <property value="" name="connector-ref"/>
+                    <property name="updated"/>
+                </properties>
+                <description></description>
+            </endpoint>
+            <scope type="http://www.mulesoft.org/schema/mule/core/async" name="Async" entity-id="99fa6d71-8fbb-4459-b395-68a2823f19ab">
+                <compartment entity-id="f8e8bc8b-1dea-4e40-9740-c0098d32d174">
+                    <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="c2431059-51df-4e9d-8805-48fc06c9a7d8">
+                        <pattern type="http://www.mulesoft.org/schema/mule/core/flow-ref" name="Flow Reference" entity-id="b807d7fc-ec29-4b61-8da2-7e08a87e6d9d">
+                            <properties>
+<property value="10_create_messageFlow2" name="name"/>
+<property name="updated"/>
+                            </properties>
+                            <description></description>
+                        </pattern>
+                    </lane>
+                </compartment>
+            </scope>
+            <pattern type="http://www.mulesoft.org/schema/mule/hl7/ack-component" name="HL7 ACK" entity-id="53a31a7a-45e1-4211-a420-481cfaf38f94"/>
+        </lane>
+    </flow>
+    <flow SubFlow="false" name="10_create_messageFlow2" entity-id="a4c206f4-7f2f-4a79-a25f-065e11b111c7">
+        <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="ea2a54f3-4243-42fd-8b60-39677aa58a0f">
+            <pattern type="http://www.mulesoft.org/schema/mule/hl7/create-message" name="HL7 Message Component" entity-id="008d87ee-e6cd-428b-9d1c-f89bc7db30e8">
+                <properties>
+                    <property value="A05" name="triggerEvent"/>
+                    <property value="" name="sendingApplication"/>
+                    <property value="" name="dateTime"/>
+                    <property value="" name="messageStructure"/>
+                    <property value="" name="receivingApplication"/>
+                    <property value="" name="receivingFacility"/>
+                    <property value="" name="sendingFacility"/>
+                    <property value="ADT" name="messageType"/>
+                    <property value="2.4" name="version"/>
+                    <property name="updated"/>
+                    <property name="auxiliary;moved-from"/>
+                    <property name="auxiliary;moved-from"/>
+                </properties>
+                <description></description>
+            </pattern>
+            <endpoint message-exchange-pattern="RequestResponse" direction="Outbound" type="http://www.mulesoft.org/schema/mule/hl7/endpoint" name="HL7" entity-id="ab2fea10-777e-4b9c-af22-306b4caf05b9">
+                <properties>
+                    <property value="8090" name="port"/>
+                    <property value="true" name="auxiliary;erased;mimeType"/>
+                    <property value="localhost" name="host"/>
+                    <property value="" name="businessEventsLabel"/>
+                    <property value="false" name="disableTransportTransformer"/>
+                    <property value="request-response" name="exchange-pattern"/>
+                    <property value="false" name="tracking:enable-default-events"/>
+                    <property value="" name="ref"/>
+                    <property value="" name="transformer-refs"/>
+                    <property value="" name="address"/>
+                    <property value="true" name="auxiliary;erased;encoding"/>
+                    <property value="" name="encoding"/>
+                    <property value="" name="responseTransformer-refs"/>
+                    <property value="10000" name="responseTimeout"/>
+                    <property value="" name="mimeType"/>
+                    <property value="" name="connector-ref"/>
+                    <property name="updated"/>
+                </properties>
+                <description></description>
+            </endpoint>
+        </lane>
+    </flow>
+    <description></description>
+</mule-configuration>

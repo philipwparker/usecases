@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:hl7="http://www.mulesoft.org/schema/mule/hl7" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/hl7 http://www.mulesoft.org/schema/mule/hl7/current/mule-hl7.xsd 
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd 
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd ">
+    <flow name="remove_all_segmentsFlow1" doc:name="remove_all_segmentsFlow1">
+        <hl7:inbound-endpoint host="localhost" port="8087" responseTimeout="10000" exchange-pattern="request-response" doc:name="HL7"/>
+        <async doc:name="Async">
+            <flow-ref name="6_segment_remove_all_repsFlow1" doc:name="Flow Reference"/>
+        </async>
+        <hl7:ack-component doc:name="HL7 ACK"/>
+    </flow>
+    <flow name="6_segment_remove_all_repsFlow1" doc:name="6_segment_remove_all_repsFlow1">
+        <hl7:string-to-hapimessage-transformer doc:name="String to HL7 Message Object"/>
+        <set-variable variableName="payload" value="#[message.payload]" doc:name="payload"/>
+        <foreach collection="#[message.payload.getNK1All()]" doc:name="Foreach">
+            <set-payload value="#[flowVars['payload']]" doc:name="Set Payload"/>
+            <hl7:delete-segment segmentName="NK1" repetition="#[Integer.toString(flowVars['counter']-1)]" doc:name="Delete Segment"/>
+            <set-variable variableName="payload" value="#[message.payload]" doc:name="Variable"/>
+        </foreach>
+        <hl7:outbound-endpoint host="localhost" port="8090" responseTimeout="10000" exchange-pattern="request-response" doc:name="HL7"/>
+    </flow>
+</mule>

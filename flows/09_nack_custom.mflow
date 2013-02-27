@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="9_nack_custom">
+    <flow SubFlow="false" name="9_nack_customFlow1" entity-id="0d2a2249-837b-4c43-9c03-d9b2347135cc">
+        <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="ac1ceae3-4cc1-4db7-9d6c-0c85d95ee546">
+            <endpoint message-exchange-pattern="RequestResponse" direction="Inbound" type="http://www.mulesoft.org/schema/mule/hl7/endpoint" name="HL7" entity-id="4eeb1191-e1a5-42d7-a06d-47d5aedc4ee3">
+                <properties>
+                    <property value="8091" name="port"/>
+                    <property value="true" name="auxiliary;erased;mimeType"/>
+                    <property value="localhost" name="host"/>
+                    <property value="" name="businessEventsLabel"/>
+                    <property value="false" name="disableTransportTransformer"/>
+                    <property value="request-response" name="exchange-pattern"/>
+                    <property value="false" name="tracking:enable-default-events"/>
+                    <property value="" name="ref"/>
+                    <property value="" name="transformer-refs"/>
+                    <property value="" name="address"/>
+                    <property value="true" name="auxiliary;erased;encoding"/>
+                    <property value="" name="encoding"/>
+                    <property value="" name="responseTransformer-refs"/>
+                    <property value="10000" name="responseTimeout"/>
+                    <property value="" name="mimeType"/>
+                    <property value="" name="connector-ref"/>
+                    <property name="updated"/>
+                </properties>
+                <description></description>
+            </endpoint>
+            <endpoint message-exchange-pattern="RequestResponse" direction="Outbound" type="http://www.mulesoft.org/schema/mule/hl7/endpoint" name="CallBadEndpoint" entity-id="d56e2066-4cb2-4fb9-8ed1-e07d2d1c5bf6">
+                <properties>
+                    <property value="request-response" name="exchange-pattern"/>
+                </properties>
+            </endpoint>
+            <scope type="http://www.mulesoft.org/schema/mule/core/catch-exception-strategy" name="Catch Exception Strategy" entity-id="cf61cfa4-cafe-4ecd-9044-e1c02d4a454e">
+                <compartment entity-id="18fc0000-3a13-4ce5-afb0-9334a7a49790">
+                    <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="e9201061-9690-4d46-93e4-c030346b6cbf">
+                        <pattern type="http://www.mulesoft.org/schema/mule/ee/data-mapper/data-mapper-connector" name="MakeNack" entity-id="1304d180-1016-4c52-b06e-b787302b519e">
+                            <properties>
+<property value="#[payload]" name="input-ref"/>
+<property value="http://www.mulesoft.org/schema/mule/ee/data-mapper/transform" name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute"/>
+<property value="" name="config-ref"/>
+<property name="updated"/>
+<property-collection name="@http://www.mulesoft.org/schema/mule/ee/data-mapper/input-arguments;507028219">
+    <property value="true" name="isProcessed$$$$"/>
+</property-collection>
+                            </properties>
+                            <description></description>
+                        </pattern>
+                    </lane>
+                </compartment>
+            </scope>
+        </lane>
+    </flow>
+    <description></description>
+</mule-configuration>

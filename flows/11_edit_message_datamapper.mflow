@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="11_edit_message_datamapper">
+    <flow SubFlow="false" name="11_edit_message_datamapperFlow1" entity-id="3dd79c3c-d869-413b-853c-9cc1b7067aa0">
+        <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="cc1fe880-fa82-41e8-b488-60ec96c45a62">
+            <endpoint message-exchange-pattern="RequestResponse" direction="Inbound" type="http://www.mulesoft.org/schema/mule/hl7/endpoint" name="HL7" entity-id="6cba1956-dab9-4cc7-b7dd-68665224169f">
+                <properties>
+                    <property value="8093" name="port"/>
+                    <property value="true" name="auxiliary;erased;mimeType"/>
+                    <property value="localhost" name="host"/>
+                    <property value="" name="businessEventsLabel"/>
+                    <property value="false" name="disableTransportTransformer"/>
+                    <property value="request-response" name="exchange-pattern"/>
+                    <property value="false" name="tracking:enable-default-events"/>
+                    <property value="" name="ref"/>
+                    <property value="" name="transformer-refs"/>
+                    <property value="" name="address"/>
+                    <property value="true" name="auxiliary;erased;encoding"/>
+                    <property value="" name="encoding"/>
+                    <property value="" name="responseTransformer-refs"/>
+                    <property value="10000" name="responseTimeout"/>
+                    <property value="" name="mimeType"/>
+                    <property value="" name="connector-ref"/>
+                    <property name="updated"/>
+                </properties>
+                <description></description>
+            </endpoint>
+            <scope type="http://www.mulesoft.org/schema/mule/core/async" name="Async" entity-id="2f27edf2-cfbf-4238-980c-5033edd83663">
+                <compartment entity-id="ff9d6dfc-4250-4cea-8127-43d177b3d91f">
+                    <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="f39c2215-c278-4d5c-bc07-0378f71fa95b">
+                        <pattern type="http://www.mulesoft.org/schema/mule/core/flow-ref" name="Flow Reference" entity-id="731e35b1-f14a-48d2-836c-c5e8a4bf672a">
+                            <properties>
+<property value="11_edit_message_datamapperFlow2" name="name"/>
+<property name="updated"/>
+                            </properties>
+                            <description></description>
+                        </pattern>
+                    </lane>
+                </compartment>
+            </scope>
+            <pattern type="http://www.mulesoft.org/schema/mule/hl7/ack-component" name="HL7 ACK" entity-id="423c242c-e412-4a95-9073-2098d67a8acb"/>
+        </lane>
+    </flow>
+    <flow SubFlow="false" name="11_edit_message_datamapperFlow2" entity-id="f4b320dc-43e2-4a9f-8083-8bb9f558ee44">
+        <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="ce688c63-32e8-49af-9ca5-dc59e2310d3f">
+            <pattern type="http://www.mulesoft.org/schema/mule/hl7/er7-to-xml-transformer" name="ER7-encoded HL7 String to XML" entity-id="4f94abf3-9f53-4732-95d8-8c7ae8ab119d">
+                <properties>
+                    <property name="auxiliary;moved-from"/>
+                </properties>
+            </pattern>
+            <pattern type="http://www.mulesoft.org/schema/mule/ee/data-mapper/data-mapper-connector" name="EditMessage" entity-id="35d1298a-1786-4011-8543-059d440bd35c">
+                <properties>
+                    <property value="#[payload]" name="input-ref"/>
+                    <property value="http://www.mulesoft.org/schema/mule/ee/data-mapper/transform" name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute"/>
+                    <property value="" name="config-ref"/>
+                    <property name="updated"/>
+                    <property-collection name="@http://www.mulesoft.org/schema/mule/ee/data-mapper/input-arguments;1556052920"/>
+                </properties>
+                <description></description>
+            </pattern>
+            <pattern type="http://www.mulesoft.org/schema/mule/hl7/xml-to-er7-transformer" name="XML to ER7-encoded HL7 String" entity-id="1a624f97-b4d7-46ad-aa3c-ed81af5a8d7b">
+                <properties>
+                    <property name="auxiliary;moved-from"/>
+                </properties>
+            </pattern>
+            <endpoint message-exchange-pattern="RequestResponse" direction="Outbound" type="http://www.mulesoft.org/schema/mule/hl7/endpoint" name="HL7" entity-id="51257a18-32cd-4856-96fa-c44578e67d65">
+                <properties>
+                    <property value="8090" name="port"/>
+                    <property value="true" name="auxiliary;erased;mimeType"/>
+                    <property value="localhost" name="host"/>
+                    <property value="" name="businessEventsLabel"/>
+                    <property value="false" name="disableTransportTransformer"/>
+                    <property value="request-response" name="exchange-pattern"/>
+                    <property value="false" name="tracking:enable-default-events"/>
+                    <property value="" name="ref"/>
+                    <property value="" name="transformer-refs"/>
+                    <property value="" name="address"/>
+                    <property value="true" name="auxiliary;erased;encoding"/>
+                    <property value="" name="encoding"/>
+                    <property value="" name="responseTransformer-refs"/>
+                    <property value="10000" name="responseTimeout"/>
+                    <property value="" name="mimeType"/>
+                    <property value="" name="connector-ref"/>
+                    <property name="updated"/>
+                </properties>
+                <description></description>
+            </endpoint>
+        </lane>
+    </flow>
+    <description></description>
+</mule-configuration>

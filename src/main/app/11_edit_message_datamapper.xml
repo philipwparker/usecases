@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:hl7="http://www.mulesoft.org/schema/mule/hl7" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/hl7 http://www.mulesoft.org/schema/mule/hl7/current/mule-hl7.xsd 
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd 
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd 
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd ">
+    <flow name="11_edit_message_datamapperFlow1" doc:name="11_edit_message_datamapperFlow1">
+        <hl7:inbound-endpoint host="localhost" port="8093" responseTimeout="10000" exchange-pattern="request-response" doc:name="HL7"/>
+        <async doc:name="Async">
+            <flow-ref name="11_edit_message_datamapperFlow2" doc:name="Flow Reference"/>
+        </async>
+        <hl7:ack-component doc:name="HL7 ACK"/>
+    </flow>
+    <flow name="11_edit_message_datamapperFlow2" doc:name="11_edit_message_datamapperFlow2">
+        <hl7:er7-to-xml-transformer doc:name="ER7-encoded HL7 String to XML"/>
+        <data-mapper:transform doc:name="EditMessage"/>
+        <hl7:xml-to-er7-transformer doc:name="XML to ER7-encoded HL7 String"/>
+        <hl7:outbound-endpoint host="localhost" port="8090" responseTimeout="10000" exchange-pattern="request-response" doc:name="HL7"/>
+    </flow>
+</mule>

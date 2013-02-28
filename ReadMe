@@ -1,0 +1,26 @@
+Read me - use cases
+
+notes: 
+Async scope means that the message processors within it are executed on another thread.
+The reason flow refs have been used is so that an exception strategy can be used with the messages in the async scope.
+All flows can be executed using Hapi test panel or similar HL7 client with the message HL7.txt, located in src/main/resources of this project, receiver should always listen on 8090
+
+01 point to point
+Inbound endpoint listening on localhost:8081, receives message then forwards onto another HL7 application listening on localhost 8090, at the same time an ack is sent back to original caller
+
+02 ack_standard
+Flow 1) Inbound endpoint listening on localhost:8082, receives message then executes database call, at the same time an ack is sent back to original caller
+Flow 2) Inbound endpoint listening on localhost:8083, receives message then executes database call then an ack is sent back to original caller
+
+
+03 ack_custom (NOT FINISHED, DM PROBLEMS)
+Inbound endpoint listening on localhost:8084, receives message then executes database call, at the same time a custom ack is created in Data Mapper using xsd's as inputs and outputs and then sent back to original caller
+
+04 segment_add
+Inbound endpoint listening on localhost:8085, receives message then transforms message from string to Hapi object so that the add segment MP can be used to add another segment to the message which is is then sent to an application listening on localhost:8090, at the same time an ack is sent back to original caller
+
+05 segment_remove
+Inbound endpoint listening on localhost:8086, receives message then transforms message from string to Hapi object so that the remove segment MP can be used to remove repetition 0 of NK1 segment from the message which is is then sent to an application listening on localhost:8090, at the same time an ack is sent back to original caller
+
+06 segment_remove_all_reps
+Inbound endpoint listening on localhost:8087, receives message then transforms message from string to Hapi object so that the remove segment MP can be used to remove all repetitions of NK1 segment from the message which is is then sent to an application listening on localhost:8090, at the same time an ack is sent back to original caller
